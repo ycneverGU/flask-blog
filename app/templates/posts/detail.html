@@ -4,11 +4,11 @@
 {% block page_body %}
     <div class="container">
         {# Meta 信息 #}
-        <span>作者:{{ post.author.name }}</span> <span>{{ _("发表日期") }}:{{ post.created }}</span>
+        <span>作者:{{ post.author.name }}</span> <span>{{ "发表日期" }}:{{ post.created }}</span>
 
         {# 正文 #}
         <div>
-            {{ post.body_html | safe }}
+            {{ post.body | safe }}
         </div>
 
         {# 操作链接 #}
@@ -23,7 +23,7 @@
             <div class="media">
                 <div class="media-left">
                     <a href="#">
-                        <img class="media-object img-circle" src="{{ comment.author.email | gravatar }}">
+                        <img class="media-object img-circle" src="{{ comment.author.email }}">
                     </a>
                 </div>
                 <div class="media-body">

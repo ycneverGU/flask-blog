@@ -61,14 +61,12 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String)
     body = db.Column(db.String)
-    body_html = db.Column(db.String)
     created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     comments = db.relationship('Comment', backref='post')
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
-db.event.listen(Post.body, 'set', Post.on_body_changed)
 
 
 class Comment(db.Model):

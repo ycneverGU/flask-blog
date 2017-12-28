@@ -19,7 +19,7 @@ def login():
     return render_template('login.html', title=u'登录', form=form)
 
 @auth.route('/logout')
-def logut():
+def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 

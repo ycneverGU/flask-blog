@@ -5,7 +5,7 @@ from flask import render_template, request, flash, redirect, url_for, current_ap
 from . import main
 from .. import db
 from ..models import Post, Comment
-from flask.ext.login import login_required, current_user
+from flask_login import login_required, current_user
 from .forms import CommentForm, PostForm
 
 
@@ -27,7 +27,7 @@ def index():
     posts = pagination.items
 
     return render_template('index.html',
-                           title=_(u'你好，世界'),
+                           title=u'你好，世界',
                            posts=posts,
                            pagination=pagination)
 
@@ -66,7 +66,7 @@ def edit(id=0):
     form = PostForm()
 
     if id == 0:
-        post = Post(author=current_user)
+        post = Post(author_id=current_user.id)
     else:
         post = Post.query.get_or_404(id)
 
@@ -84,7 +84,7 @@ def edit(id=0):
 
     title = (u'添加新文章')
     if id > 0:
-        title = (u'编辑 - %(title)', title=post.title)
+        title =u'编辑 - %s' % post.title 
 
     return render_template('posts/edit.html',
                            title=title,
