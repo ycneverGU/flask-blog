@@ -2,15 +2,12 @@
 # coding=utf-8
 from os import path
 from werkzeug.routing import BaseConverter
-from flask import Flask
-from flask_nav import Nav
-from flask_nav.elements import *
+from flask import Flask,request
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_pagedown import PageDown
 from flask_login import LoginManager,current_user
 db = SQLAlchemy()
-nav = Nav()
 bootstrap = Bootstrap()
 basedir = path.abspath(path.dirname(__file__))
 pagedown = PageDown()
@@ -29,13 +26,7 @@ def create_app():
     app.config.from_pyfile('config')
     app.config['SQLALCHEMY_DATABASE_URI'] = \
         'sqlite:///' + path.join(basedir, 'data.sqlite')
-    app.config['SQLALCHEMY_COMMIT_ON_TEARDOW'] = True
-    nav.register_element('top', Navbar('ycngu',
-                                       View(u'主页', 'main.index'),
-                                       View(u'关于', 'main.about'),
-                                       View(u'项目', 'main.projects'),
-                                       ))
-   #Nav.init_app(app)
+    app.config['SQLALCHEMY_COMMIT_ON_TEARDOW'] = True 
     login_manager.init_app(app)
     bootstrap.init_app(app)
     db.init_app(app)
