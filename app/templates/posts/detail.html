@@ -5,7 +5,9 @@
     <div class="container">
         {# Meta 信息 #}
         <span>作者:{{ post.author.name }}</span> <span>{{ "发表日期" }}:{{ post.created }}</span>
-
+        {% if post.author_id is author_selfid %}
+        <span><a href="{{url_for('main.post_delete',post_id=post.id)}}" class='btn btn-warn btn-sm btn-delete-post' id='{{post.id}}'>删除</a></span>
+        {% endif %}
         {# 正文 #}
         <div>
             {{ post.body | safe }}
