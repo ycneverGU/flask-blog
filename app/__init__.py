@@ -40,5 +40,9 @@ def create_app():
     @app.template_test('current_link')
     def is_current_link(link):
         return link == request.path
+    
+    @app.template_test('author_selfid')
+    def is_current_author(id):
+        return id == current_user.id
 
     return app

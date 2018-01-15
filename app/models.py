@@ -1,7 +1,6 @@
 from . import db, login_manager
 from flask_login import UserMixin, AnonymousUserMixin
 from datetime import datetime
-from markdown import markdown
 from werkzeug.security import generate_password_hash,check_password_hash
 
 class Role(db.Model):
@@ -51,7 +50,9 @@ class AnonymousUser(AnonymousUserMixin):
 
     def is_administrator(self):
         return False
-
+    
+    def id(self):
+        return None
 
 login_manager.anonymous_user = AnonymousUser
 
