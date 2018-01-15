@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-from flask import render_template, request, flash, redirect, url_for, current_app, abort
+from flask import render_template, request, flash, redirect, url_for, current_app, abort, g
 from . import main
 from .. import db
-from ..models import Post, Comment
+from ..models import Post, Comment, User
 from flask_login import login_required, current_user
 from .forms import CommentForm, PostForm
-
+import json
 
 @main.errorhandler(404)
 def page_not_found(error):
@@ -84,7 +84,7 @@ def edit(id=0):
 
     title = (u'添加新文章')
     if id > 0:
-        title =u'编辑 - %s' % post.title 
+        title = u'编辑 - %s' % post.title
 
     return render_template('posts/edit.html',
                            title=title,
@@ -105,11 +105,27 @@ def shutdown():
     return u'正在关闭服务端进程...'
 
 
-@main.route("/")
-def base():
-    return render_template('base.html')
-
-
 @main.route("/projects")
 def projects():
     return "hello world"
+
+@main.route("/post_delete/<int:post_id>")
+def post_delete(post_id):
+    Post.query.filter_by(id = post_id).delete()
+    db.session.commit()
+    return redirect(url_for('main.index'))
+#@main.route('/post/<int:post_id>/delete',methods=['GET','POST'])
+#def post_delete(post_id):
+#    res = {
+#        "status": 1,
+#        "message": "success"
+#    }
+#    post = Post.query.get(post_id)
+#    if not post:
+#        res['status'] = 404
+#        res["message"] = "Post Not Found"
+#        return json.dumps(res)
+#
+#    Post.query.filter_by(id = post_id).delete()
+#    db.session.commit()
+#    return json.dumps(res)
