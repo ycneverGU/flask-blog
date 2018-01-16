@@ -118,9 +118,6 @@ def post_delete(post_id):
     return redirect(url_for('main.index'))
 
 
-@main.errorhandler(500)
-def internet_server_error(e):
-    return render_template('500.html'), 500
 
 
 @main.errorhandler(404)

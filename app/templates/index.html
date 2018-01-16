@@ -9,7 +9,7 @@
         {% for post in posts %}
             <h2><a href="{{ url_for('main.post', id = post.id) }}">{{ post.title }}</a></h2>
             <div>
-                {{ post.body_html|safe }}
+                {{ post.body | safe }}
             </div>
         {% endfor %}
 
