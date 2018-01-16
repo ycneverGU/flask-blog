@@ -120,9 +120,6 @@ def post_delete(post_id):
 
 
 
-@main.errorhandler(404)
-def page_not_found(error):
-    return render_template('404.html'), 404
 
 #@main.route('/post/<int:post_id>/delete',methods=['GET','POST'])
 # def post_delete(post_id):

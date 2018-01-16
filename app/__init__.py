@@ -44,9 +44,5 @@ def create_app():
     @app.template_test('author_selfid')
     def is_current_author(id):
         return id == current_user.id
-    
-    @app.errorhandler(500)
-    def internet_server_error(e):
-        return render_template('500.html'), 500
-
+   
     return app
