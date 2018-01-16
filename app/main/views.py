@@ -9,10 +9,6 @@ from flask_login import login_required, current_user
 from .forms import CommentForm, PostForm
 import json
 
-@main.errorhandler(404)
-def page_not_found(error):
-    return render_template('404.html'), 404
-
 
 @main.route('/')
 def index():
@@ -30,6 +26,11 @@ def index():
                            title=u'你好，世界',
                            posts=posts,
                            pagination=pagination)
+
+
+@main.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
 
 
 @main.route('/about')
@@ -109,13 +110,25 @@ def shutdown():
 def projects():
     return "hello world"
 
+
 @main.route("/post_delete/<int:post_id>")
 def post_delete(post_id):
-    Post.query.filter_by(id = post_id).delete()
+    Post.query.filter_by(id=post_id).delete()
     db.session.commit()
     return redirect(url_for('main.index'))
+
+
+@main.errorhandler(500)
+def internet_server_error(e):
+    return render_template('500.html'), 500
+
+
+@main.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
 #@main.route('/post/<int:post_id>/delete',methods=['GET','POST'])
-#def post_delete(post_id):
+# def post_delete(post_id):
 #    res = {
 #        "status": 1,
 #        "message": "success"
