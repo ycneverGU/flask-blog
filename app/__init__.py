@@ -7,7 +7,10 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_pagedown import PageDown
 from flask_login import LoginManager,current_user
+from flask_mail import Mail
+from config import config
 db = SQLAlchemy()
+mail = Mail()
 bootstrap = Bootstrap()
 basedir = path.abspath(path.dirname(__file__))
 pagedown = PageDown()
@@ -20,17 +23,16 @@ class RegexConverter(BaseConverter):
         self.regx = item[0]
 
 
-def create_app():
+def create_app(config_name):
     app = Flask(__name__)
     app.url_map.converters['regex'] = RegexConverter
-    app.config.from_pyfile('config')
-    app.config['SQLALCHEMY_DATABASE_URI'] = \
-        'sqlite:///' + path.join(basedir, 'data.sqlite')
+    app.config.from_object(config[config_name])
     app.config['SQLALCHEMY_COMMIT_ON_TEARDOW'] = True 
     login_manager.init_app(app)
     bootstrap.init_app(app)
     db.init_app(app)
     pagedown.init_app(app)
+    mail.init_app(app)
     from auth import auth as auth_blueprint
     from main import main as main_blueprint
 
