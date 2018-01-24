@@ -26,7 +26,8 @@ class User(UserMixin, db.Model):
     password_hash=db.Column(db.String)
     posts = db.relationship('Post', backref='author')
     comments = db.relationship('Comment', backref='author')
-
+    
+    last_seen = db.Column(db.DateTime(),default=datetime.utcnow)
     confirmed = db.Column(db.Boolean, default=False)
     locale = db.Column(db.String, default='zh')
 
@@ -49,8 +50,12 @@ class User(UserMixin, db.Model):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id}).decode('utf-8')
 
+    def ping(self):
+        self.last_seen = datetime.utcnow()
+        db.session.add(self)
+
     def confirm(self, token):
-        s = Serializer(current_app.config['SECRET_KEY'])
+        s = Serializer(current_app.config['SECRET_KEY'],3600)
         try:
             data = s.loads(token.encode('utf-8'))
         except:
@@ -59,6 +64,7 @@ class User(UserMixin, db.Model):
             return False
         self.confirmed = True
         db.session.add(self)
+        db.session.commit()
         return True
 class AnonymousUser(AnonymousUserMixin):
     @property

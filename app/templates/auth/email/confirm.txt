@@ -1,0 +1,10 @@
+尊敬的用户 {{user.name}},
+
+欢迎使用ycngu博客!
+
+请您点击以下链接以激活帐号:
+
+{{ url_for('auth.confirm',token=token,_external=True) }}
+
+                                
+                            ycngu

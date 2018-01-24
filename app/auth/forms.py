@@ -35,3 +35,36 @@ class RegistrationForm(Form):
     def validate_username(self, field):
         if User.query.filter_by(name=field.data).first():
             raise ValidationError(u'用户名已被使用')
+
+
+class ChangePasswordForm(Form):
+    old_password = PasswordField(u'输入旧密码', validators=[DataRequired()])
+    password = PasswordField(u'输入新密码', validators=[
+        DataRequired(), EqualTo('password2', message=u'密码必须一至')])
+    password2 = PasswordField(u'再次确认新密码',
+                              validators=[DataRequired()])
+    submit = SubmitField(u'提交')
+
+
+class PasswordResetRequestForm(Form):
+    email = StringField(u'邮箱', validators=[DataRequired(), Length(1, 64),
+                                             Email()])
+    submit = SubmitField(u'重置密码')
+
+
+class PasswordResetForm(Form):
+    password = PasswordField(u'新密码', validators=[
+        DataRequired(), EqualTo('password2', message=u'密码必须一至')])
+    password2 = PasswordField(u'再次确认新密码', validators=[DataRequired()])
+    submit = SubmitField(u'重置密码')
+
+
+class ChangeEmailForm(Form):
+    email = StringField(u'新邮箱', validators=[DataRequired(), Length(1, 64),
+                                                 Email()])
+    password = PasswordField(u'密码', validators=[DataRequired()])
+    submit = SubmitField(u'提交')
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError(u'此邮箱已被注册')
