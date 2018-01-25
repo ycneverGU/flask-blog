@@ -43,6 +43,7 @@ def confirm(token):
     if current_user.confirmed:
         return redirect(url_for('main.index'))
     if current_user.confirm(token):
+        db.session.commit()
         flash(u'您已经激活了您的帐号')
     else:
         flash(u'此确认链接无效或已过期')
@@ -54,7 +55,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(name=form.username.data).first()
         if user is not None and user.verify_password(form.password.data):
-            login_user(user, form.remember_me.data)
+            login_user(user, remember=form.remember_me.data)
             return redirect(request.args.get('next') or url_for('main.index'))
     return render_template('login.html', title=u'登录', form=form)
 
