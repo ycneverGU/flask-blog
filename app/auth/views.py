@@ -31,8 +31,8 @@ def unconfirmed():
 @login_required
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
-    send_email(current_user.email, 'Confirm Your Account',
-               'auth/email/confirm', user=current_user, token=token)
+    send_email(current_user.email, u'激活您的帐号',
+               'auth/email/confirm',user=current_user, token=token)
     flash(u'激活邮件已重新发送到您的邮箱')
     return redirect(url_for('main.index'))
 
