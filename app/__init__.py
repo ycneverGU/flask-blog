@@ -8,9 +8,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_pagedown import PageDown
 from flask_login import LoginManager,current_user
 from flask_mail import Mail
+from flask_moment import Moment
 from config import config
 db = SQLAlchemy()
 mail = Mail()
+moment = Moment()
 bootstrap = Bootstrap()
 basedir = path.abspath(path.dirname(__file__))
 pagedown = PageDown()
@@ -33,6 +35,7 @@ def create_app(config_name):
     db.init_app(app)
     pagedown.init_app(app)
     mail.init_app(app)
+    moment.init_app(app)
     from auth import auth as auth_blueprint
     from main import main as main_blueprint
 
