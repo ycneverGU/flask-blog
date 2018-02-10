@@ -1,25 +1,26 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+{%block title%}ycngu - 编辑文章{%endblock%}
 {% block scripts %}
-    <script type='text/javascript' src='{{url_for('static',filename='ckeditor/ckeditor.js')}}'></script>
+<script type='text/javascript' src='{{url_for('static',filename='ckeditor/ckeditor.js')}}'></script>
 {% endblock %}
 
-{% block page_body %}
-    <div class="container">
-        <form method="POST">
-            {{ form.hidden_tag() }}
-            <div class="form-group">
-                {{ form.title(class="form-control", placeholder=("请输入文章标题")  ) }}
-            </div>
-            <div class="form-group">
-                {{ form.body(only_input=True,rows=10,class="ckeditor") }}
-            </div>
-            <div class="form-group">
-                {{ form.submit(class="btn btn-primary") }}
-            </div>
+{% block page_content %}
+<div class="container">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.title(class="form-control", placeholder=("请输入文章标题")  ) }}
+        </div>
+        <div class="form-group">
+            {{ form.body(only_input=True,rows=10,class="ckeditor") }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
 
-        </form>
-    </div>
+    </form>
+</div>
 {% endblock %}
 

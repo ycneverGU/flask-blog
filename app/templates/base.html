@@ -2,6 +2,8 @@
 
 {% block head  %}
     {{super()}}
+    {{moment.include_jquery()}}
+    {{moment.include_moment()}}
 {% endblock %}   
 {% block styles %}
     {{super()}}
@@ -12,19 +14,18 @@
 {%block navbar%}
 {% include 'includes/_navbar.html'%}
 {%endblock%}
-{%block content%}
-        {%block header%}
-            <header>
-                <div class="page-header">
-                    <div class="container"><h1>{{title}}</h1></div>
-                </div>
-            </header>
-        {%endblock%}
-    {% block page_body %}
-    {% endblock%}
-{%endblock%}
-{%block footer%}
-    <footer>
-        Copyright 2017 by <a>ycngu</a>
-    </footer>
-{%endblock%}
+
+
+{% block content %}
+<div class="container">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
+

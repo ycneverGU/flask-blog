@@ -1,39 +1,40 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block page_body %}
-    <div class="container">
-        {# Meta 信息 #}
-        <span>作者:{{ post.author.name }}</span> <span>{{ "发表日期" }}:{{ post.created }}</span>
-        {% if post.author_id is author_selfid %}
-        <span><a href="{{url_for('main.post_delete',post_id=post.id)}}" class='btn btn-warn btn-sm btn-delete-post' id='{{post.id}}'>删除</a></span>
-        {% endif %}
-        {# 正文 #}
-        <div>
-            {{ post.body | safe }}
-        </div>
-
-        {# 操作链接 #}
-        <h3>评论</h3>
-        {# 发表评论 #}
-        <div>
-            {{ wtf.quick_form(form) }}
-        </div>
-
-        {# 评论列表 #}
-        {% for comment in post.comments|sort(attribute='created',reverse=True ) %}
-            <div class="media">
-                <div class="media-left">
-                    <a href="#">
-                        <img class="media-object img-circle" src="{{ comment.author.email }}">
-                    </a>
-                </div>
-                <div class="media-body">
-                    <small class="text-muted">{{ comment.created }}</small>
-                    <div>{{ comment.body }}</div>
-
-                </div>
-            </div>
-        {% endfor %}
+{%block title%}ycngu - 编辑文章{%endblock%}
+{% block page_content %}
+<div class="container">
+    {# Meta 信息 #}
+    <span>作者:<a href="{{url_for('main.user',username=post.author.name)}}">{{ post.author.name }}</a></span> <span>{{ "发表日期" }}:{{ post.created }}</span>
+    {% if post.author_id is author_selfid %}
+    <span><a href="{{url_for('main.post_delete',post_id=post.id)}}" class='btn btn-warn btn-sm btn-delete-post' id='{{post.id}}'>删除</a></span>
+    {% endif %}
+    {# 正文 #}
+    <div>
+        {{ post.body | safe }}
     </div>
+
+    {# 操作链接 #}
+    <h3>评论</h3>
+    {# 发表评论 #}
+    <div>
+        {{ wtf.quick_form(form) }}
+    </div>
+
+    {# 评论列表 #}
+    {% for comment in post.comments|sort(attribute='created',reverse=True ) %}
+    <div class="media">
+        <div class="media-left">
+            <a href="#">
+                <img class="media-object img-circle" src="{{ comment.author.email }}">
+            </a>
+        </div>
+        <div class="media-body">
+            <small class="text-muted">{{ comment.created }}</small>
+            <div>{{ comment.body }}</div>
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

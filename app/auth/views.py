@@ -3,11 +3,11 @@
 from flask import render_template, request, flash, redirect, url_for
 from . import auth
 from flask_login import login_user, logout_user, current_user, login_required
-from .forms import LoginForm, RegistrationForm
 from ..models import User
 from .. import db
 from ..email import send_email
-
+from .forms import LoginForm, RegistrationForm, ChangePasswordForm,\
+    PasswordResetRequestForm, PasswordResetForm, ChangeEmailForm
 
 @auth.before_app_request
 def before_request():
@@ -57,7 +57,7 @@ def login():
         if user is not None and user.verify_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect(request.args.get('next') or url_for('main.index'))
-    return render_template('login.html', title=u'登录', form=form)
+    return render_template('login.html',form=form)
 
 
 @auth.route('/logout')
@@ -72,8 +72,10 @@ def register():
 
     if form.validate_on_submit():
         user = User(email=form.email.data,
-                    name=form.username.data,
+                    username=form.username.data,
+                    name=form.name.data,
                     password=form.password.data)
+
         db.session.add(user)
         db.session.commit()
         token = user.generate_confirmation_token()
@@ -81,7 +83,7 @@ def register():
                    'auth/email/confirm', user=user, token=token)
         flash(u'一封激活邮件已发送到您的邮箱')
         return redirect(url_for('auth.login'))
-    return render_template('auth/register.html', title=u'注册', form=form)
+    return render_template('auth/register.html',form=form)
 
 
 @auth.route('/change-password', methods=['GET', 'POST'])

@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% from "bootstrap/pagination.html" import render_pagination %}
 
-{% block page_body %}
+{%block title%}ycngu{%endblock%}
+
+{% block page_content %}
     <div class="container">
         <a href="{{ url_for('main.edit') }}" class="btn btn-primary">发表新文章</a>
     </div>

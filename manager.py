@@ -8,8 +8,6 @@ app = create_app(os.getenv('YCNGU_CONFIG') or 'default')
 manager = Manager(app)
 migrate = Migrate(app,db)
 manager.add_command('db',MigrateCommand)
-
-
 @manager.command
 def test():
     pass

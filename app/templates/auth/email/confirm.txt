@@ -1,4 +1,4 @@
-尊敬的用户 {{current_user.name}},
+尊敬的用户 {{user.name}},
 
 欢迎使用ycngu博客!
 

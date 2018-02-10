@@ -20,7 +20,12 @@ class RegistrationForm(Form):
     username = StringField(u'用户名', validators=[DataRequired(),
                                                Length(1, 64),
                                                Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
-                                                      u'用户名必须由字母数、字数、下划线或 . 组成')])
+                                                      u'用户名必须由字母、数字、下划线或 . 组成')])
+
+    name = StringField(u'昵称', validators=[DataRequired(),
+                                               Length(1, 64),
+                                               Regexp('^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]{1,5}', 0,
+                                                      u'昵称必须是五个字符以内，由汉字，字母、数字、下划线组成')])
 
     password = PasswordField(u'密码', validators=[DataRequired(),
                                                 EqualTo('password2', message=u'密码必须一至')])

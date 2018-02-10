@@ -9,16 +9,19 @@ from flask_pagedown import PageDown
 from flask_login import LoginManager,current_user
 from flask_mail import Mail
 from flask_moment import Moment
+from flask_debugtoolbar import DebugToolbarExtension
 from config import config
 db = SQLAlchemy()
 mail = Mail()
 moment = Moment()
 bootstrap = Bootstrap()
+toolbar = DebugToolbarExtension()
 basedir = path.abspath(path.dirname(__file__))
 pagedown = PageDown()
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view ='auth.login'
+
 class RegexConverter(BaseConverter):
     def __init__(self, url_map, *items):
         super(RegexConverter, self).__init__(url_map)
@@ -36,6 +39,7 @@ def create_app(config_name):
     pagedown.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
+    toolbar.init_app(app)
     from auth import auth as auth_blueprint
     from main import main as main_blueprint
 
