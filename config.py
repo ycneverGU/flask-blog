@@ -24,7 +24,6 @@ class Config:
     YCNGU_SLOW_DB_QUERY_TIME = 0.5
 
     CSRF_ENABLED = True
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
     @staticmethod
     def init_app(app):
         pass

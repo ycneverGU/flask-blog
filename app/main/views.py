@@ -78,6 +78,7 @@ def edit(id=0):
 
         return redirect(url_for('.post', id=post.id))
 
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
     form.title.data = post.title
     form.body.data = post.body
 
@@ -117,7 +118,7 @@ def post_delete(post_id):
 
 @main.route("/user/<username>")
 def user(username):
-    user = User.query.filter_by(name=username).first_or_404()
+    user = User.query.filter_by(username=username).first_or_404()
     if user is None:
         abort(404)
     return render_template('user.html',user=user)
@@ -135,7 +136,7 @@ def edit_profile():
         current_user.about_me = form.about_me.data
         db.session.add(current_user._get_current_object())
         db.session.commit()
-        flash('Your profile has been updated.')
+        flash(u'您的资料已更新')
         return redirect(url_for('.user', username=current_user.username))
     form.name.data = current_user.name
     form.location.data = current_user.location
@@ -161,7 +162,7 @@ def edit_profile_admin(id):
         user.about_me = form.about_me.data
         db.session.add(user)
         db.session.commit()
-        flash('The profile has been updated.')
+        flash(u'用户资料已更新')
         return redirect(url_for('.user', username=user.username))
     form.email.data = user.email
     form.username.data = user.username
@@ -180,14 +181,14 @@ def edit_profile_admin(id):
 def follow(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash('Invalid user.')
+        flash(u'用户不存在')
         return redirect(url_for('.index'))
     if current_user.is_following(user):
-        flash('You are already following this user.')
+        flash(u'您已经关注了这个用户')
         return redirect(url_for('.user', username=username))
     current_user.follow(user)
     db.session.commit()
-    flash('You are now following %s.' % username)
+    flash(u'您关注了 %s.' % username)
     return redirect(url_for('.user', username=username))
 
 
@@ -197,14 +198,14 @@ def follow(username):
 def unfollow(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash('Invalid user.')
+        flash(u'用户不存在')
         return redirect(url_for('.index'))
     if not current_user.is_following(user):
-        flash('You are not following this user.')
+        flash(u'您没有关注此用户')
         return redirect(url_for('.user', username=username))
     current_user.unfollow(user)
     db.session.commit()
-    flash('You are not following %s anymore.' % username)
+    flash(u'您已取消对%s的关注' % username)
     return redirect(url_for('.user', username=username))
 
 
@@ -212,7 +213,7 @@ def unfollow(username):
 def followers(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash('Invalid user.')
+        flash(u'用户不存在')
         return redirect(url_for('.index'))
     page = request.args.get('page', 1, type=int)
     pagination = user.followers.paginate(
@@ -229,7 +230,7 @@ def followers(username):
 def followed_by(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash('Invalid user.')
+        flash(u'用户不存在')
         return redirect(url_for('.index'))
     page = request.args.get('page', 1, type=int)
     pagination = user.followed.paginate(
