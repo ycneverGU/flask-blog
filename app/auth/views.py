@@ -57,7 +57,7 @@ def login():
         if user is not None and user.verify_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect(request.args.get('next') or url_for('main.index'))
-        flash(u'用户不存在')
+        flash(u'用户不存在或密码错误')
     return render_template('login.html',form=form)
 
 
@@ -97,10 +97,10 @@ def change_password():
             current_user.password = form.password.data
             db.session.add(current_user)
             db.session.commit()
-            flash('您的密码已经修改完毕')
+            flash(u'您的密码已经修改完毕')
             return redirect(url_for('main.index'))
         else:
-            flash('密码不正确')
+            flash(u'密码不正确')
     return render_template("auth/change_password.html", form=form)
 
 
@@ -117,7 +117,7 @@ def password_reset_request():
                        'auth/email/reset_password',
                        user=user, token=token,
                        next=request.args.get('next'))
-        flash('一封重置密码的邮件已发送到您的邮箱')
+        flash(u'一封重置密码的邮件已发送到您的邮箱')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)
 
@@ -130,7 +130,7 @@ def password_reset(token):
     if form.validate_on_submit():
         if User.reset_password(token, form.password.data):
             db.session.commit()
-            flash('您的密码已更新')
+            flash(u'您的密码已更新')
             return redirect(url_for('auth.login'))
         else:
             return redirect(url_for('main.index'))
@@ -148,10 +148,10 @@ def change_email_request():
             send_email(new_email, u'确认您的新邮箱地址',
                        'auth/email/change_email',
                        user=current_user, token=token)
-            flash('一封确认新邮箱地址的邮件已发送到您的新邮箱')
+            flash(u'一封确认新邮箱地址的邮件已发送到您的新邮箱')
             return redirect(url_for('main.index'))
         else:
-            flash('邮箱或密码验证未通过')
+            flash(u'邮箱或密码验证未通过')
     return render_template("auth/change_email.html", form=form)
 
 
@@ -160,7 +160,7 @@ def change_email_request():
 def change_email(token):
     if current_user.change_email(token):
         db.session.commit()
-        flash('您的邮箱地址已更新')
+        flash(u'您的邮箱地址已更新')
     else:
-        flash('未验证的请求！')
+        flash(u'未验证的请求！')
     return redirect(url_for('main.index'))
