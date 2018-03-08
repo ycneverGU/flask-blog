@@ -32,12 +32,6 @@ class Role(db.Model):
     permissions = db.Column(db.Integer)
     default = db.Column(db.Boolean, default=False, index=True)
 
-    @staticmethod
-    def seed():
-        db.session.add_all(map(lambda r: Role(name=r), [
-                           'Guests', 'Administrators']))
-        db.session.commit()
-
     def __init__(self, **kwargs):
         super(Role, self).__init__(**kwargs)
         if self.permissions is None:
@@ -79,6 +73,9 @@ class Role(db.Model):
     def has_permission(self, perm):
         return self.permissions & perm == perm
 
+    def __repr__(self):
+        return '<Role %r>' % self.name
+
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -96,6 +93,8 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+
+    todolist = db.relationship('Todolist', backref='user')
 
     avatar_hash = db.Column(db.String(32))
 
@@ -155,6 +154,25 @@ class User(UserMixin, db.Model):
             return False
         self.confirmed = True
         db.session.add(self)
+        return True
+
+    def generate_reset_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'reset': self.id}).decode('utf-8')
+
+
+    @staticmethod
+    def reset_password(token, new_password):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            return False
+        user = User.query.get(data.get('reset'))
+        if user is None:
+            return False
+        user.password = new_password
+        db.session.add(user)
         return True
 
     def generate_email_change_token(self, new_email, expiration=3600):
@@ -229,7 +247,7 @@ class AnonymousUser(AnonymousUserMixin):
     def id(self):
         return None
 
-    def can(self,permissions):
+    def can(self, permissions):
         return False
 
     def is_administrator(self):
@@ -265,3 +283,12 @@ class Comment(db.Model):
     created = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+class Todolist(db.Model):
+    __tablename__= 'todolist'
+    id = db.Column(db.Integer,primary_key=True)
+    msg = db.Column(db.String)
+    todo_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    created = db.Column(db.DateTime,default=datetime.utcnow)
+
+

@@ -4,6 +4,7 @@
     {{super()}}
     {{moment.include_jquery()}}
     {{moment.include_moment()}}
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles.css')}}">
 {% endblock %}   
 {% block styles %}
     {{super()}}
