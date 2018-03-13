@@ -11,6 +11,7 @@ from flask_mail import Mail
 from flask_moment import Moment
 from flask_debugtoolbar import DebugToolbarExtension
 from config import config
+from flask_gravatar import Gravatar
 db = SQLAlchemy()
 mail = Mail()
 moment = Moment()
@@ -39,6 +40,7 @@ def create_app(config_name):
     mail.init_app(app)
     moment.init_app(app)
     toolbar.init_app(app)
+    Gravatar(app,size=64)
     from auth import auth as auth_blueprint
     from main import main as main_blueprint
     app.register_blueprint(auth_blueprint)
