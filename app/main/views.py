@@ -10,6 +10,13 @@ from .forms import EditProfileForm, EditProfileAdminForm, PostForm,\
 from ..models import Permission, Role, User, Post, Comment
 from ..decorators import admin_required, permission_required
 import json
+
+
+@main.route('/mycharts')
+def mycharts():
+    return render_template('charts.html')
+
+
 @main.route('/')
 def index():
 
@@ -116,14 +123,13 @@ def post_delete(post_id):
     db.session.commit()
     return redirect(url_for('main.index'))
 
+
 @main.route("/user/<username>")
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     if user is None:
         abort(404)
-    return render_template('user.html',user=user)
-
-
+    return render_template('user.html', user=user)
 
 
 @main.route('/edit-profile', methods=['GET', 'POST'])
@@ -142,8 +148,6 @@ def edit_profile():
     form.location.data = current_user.location
     form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', form=form)
-
-
 
 
 @main.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
@@ -172,7 +176,6 @@ def edit_profile_admin(id):
     form.location.data = user.location
     form.about_me.data = user.about_me
     return render_template('edit_profile.html', form=form, user=user)
-
 
 
 @main.route('/follow/<username>')
@@ -247,7 +250,7 @@ def followed_by(username):
 @login_required
 def show_all():
     resp = make_response(redirect(url_for('.index')))
-    resp.set_cookie('show_followed', '', max_age=30*24*60*60)
+    resp.set_cookie('show_followed', '', max_age=30 * 24 * 60 * 60)
     return resp
 
 
@@ -255,7 +258,7 @@ def show_all():
 @login_required
 def show_followed():
     resp = make_response(redirect(url_for('.index')))
-    resp.set_cookie('show_followed', '1', max_age=30*24*60*60)
+    resp.set_cookie('show_followed', '1', max_age=30 * 24 * 60 * 60)
     return resp
 
 
