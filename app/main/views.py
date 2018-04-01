@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-from flask import render_template, request, flash, redirect, url_for, current_app, abort, g
+from flask import render_template, request, flash, redirect, url_for, current_app, abort, g,jsonify
 from . import main
 from .. import db
 from flask_login import login_required, current_user
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm,\
     CommentForm
-from ..models import Permission, Role, User, Post, Comment
+from ..models import Permission, Role, User, Post, Comment,charts
 from ..decorators import admin_required, permission_required
+from ..data import out
 import json
 
 
@@ -16,6 +17,25 @@ import json
 def mycharts():
     return render_template('charts.html')
 
+@main.route('/mychartstest')
+def mychartstest():
+    return render_template('chartstest.html')
+
+@main.route('/data',methods=['GET','POST'])
+def json():
+    #fs = charts.query.all()
+    s = out() 
+    list = {'MQ2':[],'wendu':[],'shidu':[],'time':[]}
+
+    for n in s: 
+        list["MQ2"].append(n["MQ2"])
+        list["wendu"].append(n["wendu"])
+        list["shidu"].append(n["shidu"])
+        list["time"].append(n["time"])
+    print(list) 
+    return jsonify(list) 
+
+    
 
 @main.route('/')
 def index():

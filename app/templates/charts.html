@@ -5,7 +5,7 @@
 <div class="page-header">
     <h1>数据图示</h1>
 </div>
-<div id="mycharts"  style="width:500px; height:400px;">console.log('here')</div>
+<div id="mycharts"  style="width:100%; height:400px;"></div>
 {% endblock %}
 {% block scripts %}
     {{super()}}
@@ -21,33 +21,38 @@
             data:['温度','湿度','烟雾浓度']
         },
         xAxis:{
-            data:[1,2,3,4]
+            type:'time',
+            data:[1,2,3,4,5,6,7,8,9]
         },
         yAxis:{},    
         series:[
         {
             name:'温度',
             type:'line',
-            data:[1,2,3,4]   
+            data:[3,5,6,7,4,6,8,7,9]   
         },
         {
             name:'湿度',
             type:'line',
-            data:[1,2,3,4]    
+            data:[2,3,4,5,6,7,8,9,4]    
         },
         {
             name:'烟雾浓度',
             type:'line',
-            data:[1,2,3,4]    
+            data:[4,4,4,4,4,4,4,4,4]    
         }
         ]
     });
-/*
-Charts.showLoading();
+    window.onresize = function(){
+        mycharts.resize(); 
+    };
 
-$.get('data.json').done(funtion (data) {
-    Charts.hideLoading();
-    Charts.setOption({
+/*
+mycharts.showLoading();
+
+$.get('data.json').done(function (data) {
+    mycharts.hideLoading();
+    mycharts.setOption({
         title:{
             text:'数据图示'
         },

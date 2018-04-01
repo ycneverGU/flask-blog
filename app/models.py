@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 import hashlib
+import json
 
 
 class Permission:
@@ -291,4 +292,16 @@ class Todolist(db.Model):
     todo_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     created = db.Column(db.DateTime,default=datetime.utcnow)
 
+class charts(db.Model):
+    __tablename__= 'charts'
+    id = db.Column(db.Integer,primary_key=True)
+    data = db.Column(db.Integer)
+    time = db.Column(db.DateTime,default=datetime.utcnow)
+
+    def to(self):
+        Json_Charts={
+            "data":self.data,
+            "time":self.time
+        }
+        return Json_Charts
 
