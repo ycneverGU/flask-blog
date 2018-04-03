@@ -13,7 +13,13 @@ def make_shell_context():
     return dict(db=db, User=User, Follow=Follow, Role=Role,
                 Permission=Permission, Post=Post, Comment=Comment,Todolist=Todolist)
 
-
+@app.cli.command()
+def seed():
+    superadmin=User(name='admin',username='admin',email='guon691@163.com',role_id=2,confirmed=1,locale='zh',location='default')
+    superadmin.password ='1234567890'
+    superadmin.avatar_hash = superadmin.gravatar_hash()
+    db.session.add(superadmin)
+    db.session.commit()
 
 if __name__ == '__main__':
-  app.run()
+    app.run()
