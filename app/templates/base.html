@@ -4,6 +4,7 @@
     {{super()}}
     {{moment.include_jquery()}}
     {{moment.include_moment('2.18.1','//cdn.bootcss.com/moment.js/2.18.1/moment-with-locales.min.js')}}
+    {{moment.lang('zh-cn')}}
     <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles.css')}}">
 {% endblock %}   
 {% block styles %}

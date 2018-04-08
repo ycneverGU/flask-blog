@@ -10,6 +10,7 @@ from .forms import EditProfileForm, EditProfileAdminForm, PostForm,\
 from ..models import Permission, Role, User, Post, Comment,charts
 from ..decorators import admin_required, permission_required
 from ..data import out
+from datetime import datetime
 import json
 
 
@@ -23,11 +24,11 @@ def mychartstest():
 
 @main.route('/data',methods=['GET','POST'])
 def json():
-    #fs = charts.query.all()
-    s = out() 
+    fs = charts.query.all()
+    #s = out() 
     list = {'MQ2':[],'wendu':[],'shidu':[],'time':[]}
 
-    for n in s: 
+    for n in fs: 
         list["MQ2"].append(n["MQ2"])
         list["wendu"].append(n["wendu"])
         list["shidu"].append(n["shidu"])
@@ -50,7 +51,8 @@ def index():
 
     return render_template('index.html',
                            posts=posts,
-                           pagination=pagination)
+                           pagination=pagination,
+                           current_time=datetime.utcnow())
 
 
 @main.errorhandler(404)
