@@ -309,3 +309,4 @@ class charts(db.Model):
         }
         return Json_Charts
 
+
