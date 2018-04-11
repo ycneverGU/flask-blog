@@ -10,14 +10,15 @@ from .forms import EditProfileForm, EditProfileAdminForm, PostForm,\
 from ..models import Permission, Role, User, Post, Comment
 from ..decorators import admin_required, permission_required
 #from ..data import out
-from .comko import port
+#from .comko import port
 from datetime import datetime
 import json
-from threading import Thread
-@main.before_first_request
-def before():
-    thr = Thread(target=port)
-    thr.start() 
+
+#from threading import Thread
+#@main.before_first_request
+#def before():
+#    thr = Thread(target=port)
+#    thr.start() 
 
 @main.route('/mycharts')
 def mycharts():
