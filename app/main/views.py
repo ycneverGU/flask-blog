@@ -10,15 +10,9 @@ from .forms import EditProfileForm, EditProfileAdminForm, PostForm,\
 from ..models import Permission, Role, User, Post, Comment
 from ..decorators import admin_required, permission_required
 #from ..data import out
-#from .comko import port
 from datetime import datetime
 import json
 
-#from threading import Thread
-#@main.before_first_request
-#def before():
-#    thr = Thread(target=port)
-#    thr.start() 
 
 @main.route('/mycharts')
 def mycharts():
@@ -35,6 +29,7 @@ def json():
     list = {'MQ2':[],'wendu':[],'shidu':[],'time':[]}
 
     for n in fs: 
+        n.to_json()
         list["MQ2"].append(n["MQ2"])
         list["wendu"].append(n["wendu"])
         list["shidu"].append(n["shidu"])
