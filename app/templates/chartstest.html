@@ -61,6 +61,7 @@ $.get("/data").done(function (data,status) {
         },
         /*toolbox:{
             show:true,
+#from ..data import out
             feature:{
                 dataview:{readOnly:false},
                 restore:{},
@@ -145,5 +146,27 @@ $.get("/data").done(function (data,status) {
         ]
     });        
 });
+function addData(){
+    $.get("/data").done(function(data,status){
+        mycharts.setOption({
+            xAxis:{
+                data:data['time']
+            }, 
+         series:[{
+            name:"温度",
+            data:data["wendu"]    
+        },
+        {
+            name:"湿度",
+            data:data["shidu"]    
+        },
+        {
+            name:"烟雾浓度",
+            data:data["MQ2"]    
+        }]                     
+        });
+    });
+};
+setInterval(addData,1000*5);
     </script>
 {% endblock %}

@@ -7,7 +7,7 @@ from .. import db
 from flask_login import login_required, current_user
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm,\
     CommentForm
-from ..models import Permission, Role, User, Post, Comment
+from ..models import Permission, Role, User, Post, Comment,charts
 from ..decorators import admin_required, permission_required
 #from ..data import out
 from datetime import datetime
@@ -29,12 +29,11 @@ def json():
     list = {'MQ2':[],'wendu':[],'shidu':[],'time':[]}
 
     for n in fs: 
-        n.to_json()
+        n = n.to()
         list["MQ2"].append(n["MQ2"])
         list["wendu"].append(n["wendu"])
         list["shidu"].append(n["shidu"])
         list["time"].append(n["time"])
-    print(list) 
     return jsonify(list) 
 
     

@@ -302,7 +302,7 @@ class charts(db.Model):
 
     def to(self):
         Json_Charts={
-            "wendu":self.wen,
+            "wendu":self.wendu,
             "shidu":self.shidu,
             "MQ2":self.MQ2,
             "time":self.time
