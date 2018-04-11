@@ -69,15 +69,45 @@ $.get("/data").done(function (data,status) {
         },*/
         tooltip:{},
         xAxis:{
-            type:"category",
+            type:"category", 
             splitLine:{
-                show:false
+                show:true
             },
             showAllSymbol:true,
             data:data["time"]
         },
         yAxis:{
         },    
+        dataZoom:[
+            {
+                type:'slider',
+                show:true,
+                xAxisIndex:[0],
+                start:1,
+                end:35
+            },
+            { 
+                type:'slider',
+                show:true,
+                yAxisIndex:[0],
+                left:'93%',
+                start:1,
+                end:100
+            },
+            {
+                type:'inside',
+                xAxisIndex:[0],
+                start:1,
+                end:35
+            },
+            {
+                type:'inside',
+                yAxisIndex:[0],
+                start:1,
+                end:100
+            }    
+        ],
+        
         series:[
         {
             name:"温度",
