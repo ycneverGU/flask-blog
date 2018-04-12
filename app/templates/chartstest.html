@@ -147,7 +147,7 @@ $.get("/data").done(function (data,status) {
     });        
 });
 function addData(){
-    $.get("/data").done(function(data,status){
+    $.get("/data").done(function(data){
         mycharts.setOption({
             xAxis:{
                 data:data['time']

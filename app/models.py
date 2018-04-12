@@ -298,7 +298,7 @@ class charts(db.Model):
     wendu = db.Column(db.Integer)
     shidu = db.Column(db.Integer)
     MQ2 = db.Column(db.Integer)
-    time = db.Column(db.DateTime,default=datetime.utcnow)
+    time = db.Column(db.DateTime,default=datetime.now)
 
     def to(self):
         Json_Charts={

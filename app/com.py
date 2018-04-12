@@ -25,6 +25,7 @@ def port():
             newcharts = charts(wendu=wendu,shidu=shidu,MQ2=mq2)
             db.session.add(newcharts)
             db.session.commit()
+            print('end commit')
             print(wendu,shidu,mq2)
             #s.write(recv)
         s.flushInput() 
