@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-from flask import render_template, request, flash, redirect, url_for, current_app, abort, g,jsonify
+from flask import render_template, request, flash, redirect, url_for, current_app, abort, g, jsonify
 from . import main
 from .. import db
 from flask_login import login_required, current_user
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm,\
     CommentForm
-from ..models import Permission, Role, User, Post, Comment,charts
+from ..models import Permission, Role, User, Post, Comment, charts
 from ..decorators import admin_required, permission_required
 #from ..data import out
 from datetime import datetime
@@ -15,28 +15,50 @@ import json
 
 
 @main.route('/mycharts')
+@login_required
 def mycharts():
     return render_template('charts.html')
+
 
 @main.route('/mychartstest')
 def mychartstest():
     return render_template('chartstest.html')
 
-@main.route('/data',methods=['GET','POST'])
+
+@main.route('/searchdata', methods=['GET', 'POST'])
+@login_required
+def searchdata():
+    if request.method == 'POST':
+        stime = request.form['starttime']
+        etime = request.form['endtime']
+        fs = charts.query.filter(charts.time >= stime).filter(charts.time <= etime).all()
+        list = {'MQ2': [], 'wendu': [], 'shidu': [], 'time': []}
+
+        for n in fs:
+            n = n.to()
+            list["MQ2"].append(n["MQ2"])
+            list["wendu"].append(n["wendu"])
+            list["shidu"].append(n["shidu"])
+            list["time"].append(n["time"])
+        data = list
+        return jsonify(data)
+    else:
+        pass
+
+@main.route('/data', methods=['GET', 'POST'])
 def json():
     fs = charts.query.all()
-    #s = out() 
-    list = {'MQ2':[],'wendu':[],'shidu':[],'time':[]}
+    #s = out()
+    list = {'MQ2': [], 'wendu': [], 'shidu': [], 'time': []}
 
-    for n in fs: 
+    for n in fs:
         n = n.to()
         list["MQ2"].append(n["MQ2"])
         list["wendu"].append(n["wendu"])
         list["shidu"].append(n["shidu"])
         list["time"].append(n["time"])
-    return jsonify(list) 
+    return jsonify(list)
 
-    
 
 @main.route('/')
 def index():

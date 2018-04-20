@@ -5,12 +5,25 @@
 <div class="page-header">
     <h1>数据图示</h1>
 </div>
+<div>
+    <form class="form-inline" id="myform">
+        <div class="form-group">
+            <label class="sr-only" for="starttime">开始时间</label>
+            <input type="text" name="starttime" id="st" placeholder="例:2017-11-14" /> 
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="endtime">结束时间</label>
+            <input type="text" name="endtime" id="et" placeholder="例:2018-04-05" /> 
+        </div>
+        <button type="button" class="btn btn-primary" id="fo">搜索</button>
+    </form>
+</div>
 <div id="mycharts"  style="width:100%; height:400px;"></div>
 {% endblock %}
 {% block scripts %}
-    {{super()}}
-    <script type="text/javascript" src="{{url_for("static",filename="echarts.js")}}"></script>
-    <script type="text/javascript">
+{{super()}}
+<script type="text/javascript" src="{{url_for("static",filename="echarts.js")}}"></script>
+<script type="text/javascript">
     var mycharts = echarts.init(document.getElementById("mycharts"));
     mycharts.setOption({
         title:{
@@ -35,16 +48,16 @@
             type:"line",
             data:[]    
         },
-        {
-            name:"烟雾浓度",
-            type:"line",
-            data:[]    
-        }
+            {
+                name:"烟雾浓度",
+                type:"line",
+                data:[]    
+            }
         ]
     });
-    window.onresize = function(){
-        mycharts.resize(); 
-    };
+window.onresize = function(){
+    mycharts.resize(); 
+};
 
 mycharts.showLoading();
 
@@ -59,15 +72,15 @@ $.get("/data").done(function (data,status) {
             y:"top",
             data:["温度","湿度","烟雾浓度"]
         },
-        /*toolbox:{
-            show:true,
+            /*toolbox:{
+              show:true,
 #from ..data import out
-            feature:{
-                dataview:{readOnly:false},
-                restore:{},
-                saveAsImage:{}
-            }
-        },*/
+feature:{
+dataview:{readOnly:false},
+restore:{},
+saveAsImage:{}
+}
+},*/
         tooltip:{},
         xAxis:{
             type:"category", 
@@ -80,71 +93,71 @@ $.get("/data").done(function (data,status) {
         yAxis:{
         },    
         dataZoom:[
-            {
-                type:'slider',
-                show:true,
-                xAxisIndex:[0],
-                start:1,
-                end:35
-            },
-            { 
-                type:'slider',
-                show:true,
-                yAxisIndex:[0],
-                left:'93%',
-                start:1,
-                end:100
-            },
-            {
-                type:'inside',
-                xAxisIndex:[0],
-                start:1,
-                end:35
-            },
-            {
-                type:'inside',
-                yAxisIndex:[0],
-                start:1,
-                end:100
-            }    
-        ],
-        
-        series:[
-        {
-            name:"温度",
-            type:"line",
-            /*itemStyle:{
-                normal:{
-                    label:{show:true}
-                }
-            },*/
-            showAllSymbol:true,
-            data:data["wendu"]    
-        },
-        {
-            name:"湿度",
-            type:"line",
-            /*itemStyle:{
-                normal:{
-                    label:{show:true}
-                }
-            },*/
-            showAllSymbol:true,
-            data:data["shidu"]    
-        },
-        {
-            name:"烟雾浓度",
-            type:"line",
-            /*itemStyle:{
-                normal:{
-                    label:{show:true}
-                }
-            },*/     
-            showAllSymbol:true,
-            data:data["MQ2"]    
-        }
-        ]
-    });        
+{
+    type:'slider',
+    show:true,
+    xAxisIndex:[0],
+    start:1,
+    end:35
+},
+{ 
+    type:'slider',
+    show:true,
+    yAxisIndex:[0],
+    left:'93%',
+    start:1,
+    end:100
+},
+{
+    type:'inside',
+    xAxisIndex:[0],
+    start:1,
+    end:35
+},
+{
+    type:'inside',
+    yAxisIndex:[0],
+    start:1,
+    end:100
+}    
+],
+
+    series:[
+{
+    name:"温度",
+    type:"line",
+        /*itemStyle:{
+          normal:{
+          label:{show:true}
+          }
+          },*/
+    showAllSymbol:true,
+    data:data["wendu"]    
+},
+{
+    name:"湿度",
+    type:"line",
+        /*itemStyle:{
+          normal:{
+          label:{show:true}
+          }
+          },*/
+    showAllSymbol:true,
+    data:data["shidu"]    
+},
+{
+    name:"烟雾浓度",
+    type:"line",
+    /*itemStyle:{
+      normal:{
+      label:{show:true}
+      }
+      },*/     
+    showAllSymbol:true,
+    data:data["MQ2"]    
+}
+]
+});        
 });
 function addData(){
     $.get("/data").done(function(data){
@@ -152,21 +165,75 @@ function addData(){
             xAxis:{
                 data:data['time']
             }, 
-         series:[{
-            name:"温度",
-            data:data["wendu"]    
-        },
-        {
-            name:"湿度",
-            data:data["shidu"]    
-        },
-        {
-            name:"烟雾浓度",
-            data:data["MQ2"]    
-        }]                     
+            series:[{
+                name:"温度",
+                data:data["wendu"]    
+            },
+            {
+                name:"湿度",
+                data:data["shidu"]    
+            },
+                {
+                    name:"烟雾浓度",
+                    data:data["MQ2"]    
+                }]                     
         });
     });
 };
-setInterval(addData,1000*5);
-    </script>
+var clock = setInterval(addData,1000*5);
+/*function searchData(){
+    $.get("/searchdata").done(function(data){
+        clearInterval(clock);
+        mycharts.setOption({
+            xAxis:{
+                data:data['time']
+            }, 
+            series:[{
+                name:"温度",
+                data:data["wendu"]    
+            },
+            {
+                name:"湿度",
+                data:data["shidu"]    
+            },
+                {
+                    name:"烟雾浓度",
+                    data:data["MQ2"]    
+                }]                     
+        });
+    });
+};*/
+$("#fo").click(function () {
+    $.ajax({  
+        type: "POST",   //提交的方法
+        url:"/searchdata", //提交的地址  
+        data:$('#myform').serialize(),// 序列化表单值  
+        async: false,  
+        error: function(request) {  //失败的话
+            alert("Connection error");  
+        },  
+        success: function(data) {  //成功
+        clearInterval(clock);
+        mycharts.setOption({
+            xAxis:{
+                data:data['time']
+            }, 
+            series:[{
+                name:"温度",
+                data:data["wendu"]    
+            },
+            {
+                name:"湿度",
+                data:data["shidu"]    
+            },
+                {
+                    name:"烟雾浓度",
+                    data:data["MQ2"]    
+                }]                     
+        })
+        }  
+    });
+
+});
+</script>
 {% endblock %}
