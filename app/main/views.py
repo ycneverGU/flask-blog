@@ -167,6 +167,11 @@ def post_delete(post_id):
     db.session.commit()
     return redirect(url_for('main.index'))
 
+@main.route("/comment_delete/<int:comment_id>")
+def comment_delete(comment_id):
+    Comment.query.filter_by(id=comment_id).delete()
+    db.session.commit()
+    return redirect(url_for('main.index'))
 
 @main.route("/user/<username>")
 def user(username):

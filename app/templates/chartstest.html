@@ -8,12 +8,12 @@
 <div>
     <form class="form-inline" id="myform">
         <div class="form-group">
-            <label class="sr-only" for="starttime">开始时间</label>
-            <input type="text" name="starttime" id="st" placeholder="例:2017-11-14" /> 
+            <a>开始时间</a>
+            <input class="form-control" type="text" name="starttime" id="st" placeholder="例:2017-11-14" /> 
         </div>
         <div class="form-group">
-            <label class="sr-only" for="endtime">结束时间</label>
-            <input type="text" name="endtime" id="et" placeholder="例:2018-04-05" /> 
+            <a>结束时间</a>
+            <input class="form-control" type="text" name="endtime" id="et" placeholder="例:2018-04-05" /> 
         </div>
         <button type="button" class="btn btn-primary" id="fo">搜索</button>
     </form>
@@ -180,29 +180,9 @@ function addData(){
         });
     });
 };
+
 var clock = setInterval(addData,1000*5);
-/*function searchData(){
-    $.get("/searchdata").done(function(data){
-        clearInterval(clock);
-        mycharts.setOption({
-            xAxis:{
-                data:data['time']
-            }, 
-            series:[{
-                name:"温度",
-                data:data["wendu"]    
-            },
-            {
-                name:"湿度",
-                data:data["shidu"]    
-            },
-                {
-                    name:"烟雾浓度",
-                    data:data["MQ2"]    
-                }]                     
-        });
-    });
-};*/
+
 $("#fo").click(function () {
     $.ajax({  
         type: "POST",   //提交的方法
