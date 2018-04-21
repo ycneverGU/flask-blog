@@ -9,7 +9,7 @@
                 {{moment(current_time).fromNow(refresh=True)}}</small></h1>
     </div>
     <div class="container">
-        <a href="{{ url_for('main.edit') }}" class="btn btn-primary">发表新文章</a>
+        <a href="{{ url_for('main.edit') }}" class="btn btn-primary">写日志</a>
     </div>
     <div class="container">
         {% for post in posts %}

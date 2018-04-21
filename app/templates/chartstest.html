@@ -72,15 +72,15 @@ $.get("/data").done(function (data,status) {
             y:"top",
             data:["温度","湿度","烟雾浓度"]
         },
-            /*toolbox:{
+        toolbox:{
               show:true,
-#from ..data import out
-feature:{
-dataview:{readOnly:false},
-restore:{},
-saveAsImage:{}
-}
-},*/
+              feature:{
+                  dataView:{readOnly:false},
+                  magicType:{type:['line','bar']},
+                  restore:{},
+                  saveAsImage:{},
+                  },
+        },
         tooltip:{},
         xAxis:{
             type:"category", 
@@ -90,8 +90,45 @@ saveAsImage:{}
             showAllSymbol:true,
             data:data["time"]
         },
-        yAxis:{
-        },    
+        yAxis:[
+            {
+                boundaryGap:[0,'50%'],
+                splitLine:{
+                    show:false,
+                },
+                type:'value',
+                name:'温度℃ ',
+                position:'left',
+                offset:50,
+                axisLable:{
+                    formatter:'{value}' ,
+                },
+            },
+            {
+                boundaryGap:[0,'50%'],
+                splitLine:{
+                    show:false,
+                },
+                type:'value',
+                name:'湿度',
+                position:'left',
+                axisLable:{
+                    formatter:'{value}',
+                },
+            },
+            {
+                boundaryGap:[0,'50%'],
+                splitLine:{
+                    show:false,
+                },
+                type:'value',
+                name:'烟雾浓度',
+                position:'right',
+                axisLable:{
+                    formatter:'{value}',
+                },
+            },
+        ],    
         dataZoom:[
 {
     type:'slider',
@@ -132,7 +169,8 @@ saveAsImage:{}
           }
           },*/
     showAllSymbol:true,
-    data:data["wendu"]    
+    data:data["wendu"],
+    yAxisIndex:0,    
 },
 {
     name:"湿度",
@@ -143,7 +181,8 @@ saveAsImage:{}
           }
           },*/
     showAllSymbol:true,
-    data:data["shidu"]    
+    data:data["shidu"],    
+    yAxisIndex:1,    
 },
 {
     name:"烟雾浓度",
@@ -154,7 +193,8 @@ saveAsImage:{}
       }
       },*/     
     showAllSymbol:true,
-    data:data["MQ2"]    
+    data:data["MQ2"],    
+    yAxisIndex:2,    
 }
 ]
 });        
@@ -181,7 +221,7 @@ function addData(){
     });
 };
 
-var clock = setInterval(addData,1000*5);
+var clock = setInterval(addData,1000*5); //设置定时器，动态更新数据
 
 $("#fo").click(function () {
     $.ajax({  
@@ -193,7 +233,7 @@ $("#fo").click(function () {
             alert("Connection error");  
         },  
         success: function(data) {  //成功
-        clearInterval(clock);
+        clearInterval(clock);  //停止定时器
         mycharts.setOption({
             xAxis:{
                 data:data['time']
