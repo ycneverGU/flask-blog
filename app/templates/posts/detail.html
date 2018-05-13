@@ -26,11 +26,11 @@
     <div class="media">
         <div class="media-left">
             <a href="#">
-                <img class="media-object img-circle" href="{{url_for('main.user',username=current_user.username)}}" src="{{ comment.author.email | gravatar}}">
+                <img class="media-object img-circle"  src="{{ comment.author.email | gravatar}}">
             </a>
         </div>
         <div class="media-body">
-            <a>{{comment.author.username}}</a>
+             <a href="{{url_for('main.user',username=comment.author.username)}}">{{comment.author.username}}</a>
             <small class="text-muted">{{ comment.created }}  {% if current_user.can(Permission.ADMIN) %}
          <span><a href="{{url_for('main.comment_delete',comment_id=comment.id)}}" class='btn btn-warn btn-sm btn-delete-post' id='{{comment.id}}'>删除</a></span>
             {% endif %}</small> 

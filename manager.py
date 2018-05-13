@@ -36,7 +36,7 @@ def seed():
 
 
 if __name__ == '__main__':
-    scheduler = Scheduler(10,port)
+    scheduler = Scheduler(5,port)
     scheduler.start()
     app.run()
     scheduler.stop()
