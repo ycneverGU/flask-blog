@@ -21,19 +21,23 @@ def make_shell_context():
 
 @app.cli.command()
 def seed():
-    superadmin = User(
-        name='admin',
-        username='admin',
-        email='guon691@163.com',
-        role_id=2,
-        confirmed=1,
-        locale='zh',
-        location='default')
-    superadmin.password = '1234567890'
-    superadmin.avatar_hash = superadmin.gravatar_hash()
-    db.session.add(superadmin)
-    db.session.commit()
+    if not User.query.filter_by(name='admin'):
+        superadmin = User(
+            name='admin',
+            username='admin',
+            email='guon691@163.com',
+            role_id=2,
+            confirmed=1,
+            locale='zh',
+            location='default')
+        superadmin.password = '1234567890'
+        superadmin.avatar_hash = superadmin.gravatar_hash()
+        db.session.add(superadmin)
+        db.session.commit()
+    else:
+        print('the admin is exist')
 
+    
 
 if __name__ == '__main__':
     scheduler = Scheduler(5,port)
@@ -41,8 +45,4 @@ if __name__ == '__main__':
     app.run()
     scheduler.stop()
 
-scheduler = Scheduler(5,port)
-scheduler.start()
-app.run()
-scheduler.stop()
 
