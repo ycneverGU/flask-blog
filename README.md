@@ -7,7 +7,7 @@
 
 * cd flask-blog 
 
-* git checkout dev   //切换到开发分支（这个分支集成了下位机程序）
+* git checkout dev   //切换到开发分支
 
 * virtualenv env --no-site-packages //创建空白的虚拟环境
 
@@ -18,6 +18,15 @@
 * . test.sh  //引用外部环境变量
 
 以后每次使用都需要进入虚拟环境和引用外部变量。
+
+然后需要创建数据库，在flask-blog目录下执行以下命令：
+
+* flask db init
+* flask db migrate -m 'initial migration'
+* flask db upgrade
+* flask seed 
+
+这几行命令初始化了数据库，创建了一个超级用户 admin,用户名是admin，密码是1234567890
 
 这样环境就搭配好了
 
