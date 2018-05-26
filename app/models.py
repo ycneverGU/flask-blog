@@ -295,13 +295,18 @@ class Todolist(db.Model):
 class charts(db.Model):
     __tablename__= 'charts'
     id = db.Column(db.Integer,primary_key=True)
-    data = db.Column(db.Integer)
-    time = db.Column(db.DateTime,default=datetime.utcnow)
+    wendu = db.Column(db.Integer)
+    shidu = db.Column(db.Integer)
+    MQ2 = db.Column(db.Integer)
+    time = db.Column(db.DateTime,default=datetime.now)
 
     def to(self):
         Json_Charts={
-            "data":self.data,
+            "wendu":self.wendu,
+            "shidu":self.shidu,
+            "MQ2":self.MQ2,
             "time":self.time
         }
         return Json_Charts
+
 

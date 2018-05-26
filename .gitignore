@@ -107,6 +107,7 @@ venv.bak/
 *.sqlite
 #temporary environ variable
 environ.sh
+test.sh
 #backup
 backup
 back-up

@@ -6,7 +6,7 @@
 <div class="container">
     {# Meta 信息 #}
     <span>作者:<a href="{{url_for('main.user',username=post.author.username)}}">{{ post.author.username }}</a></span> <span>{{ "发表日期" }}:{{ post.created }}</span>
-    {% if post.author_id is author_selfid %}
+    {% if post.author_id is author_selfid or current_user.can(Permission.ADMIN)%}
     <span><a href="{{url_for('main.post_delete',post_id=post.id)}}" class='btn btn-warn btn-sm btn-delete-post' id='{{post.id}}'>删除</a></span>
     {% endif %}
     {# 正文 #}
@@ -26,15 +26,16 @@
     <div class="media">
         <div class="media-left">
             <a href="#">
-                <img class="media-object img-circle" href="{{url_for('main.user',username=current_user.username)}}" src="{{ comment.author.email | gravatar}}">
+                <img class="media-object img-circle"  src="{{ comment.author.email | gravatar}}">
             </a>
         </div>
         <div class="media-body">
-            <small class="text-muted">{{ comment.created }}</small>
-            <div>{{ comment.body }}</div>
-
-        </div>
-    </div>
+             <a href="{{url_for('main.user',username=comment.author.username)}}">{{comment.author.username}}</a>
+            <small class="text-muted">{{ comment.created }}  {% if current_user.can(Permission.ADMIN) %}
+         <span><a href="{{url_for('main.comment_delete',comment_id=comment.id)}}" class='btn btn-warn btn-sm btn-delete-post' id='{{comment.id}}'>删除</a></span>
+            {% endif %}</small> 
+            <div>{{ comment.body }}</div>       
+            </div>
     {% endfor %}
 </div>
 {% endblock %}

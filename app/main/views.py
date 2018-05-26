@@ -1,41 +1,64 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-from flask import render_template, request, flash, redirect, url_for, current_app, abort, g,jsonify
+from flask import render_template, request, flash, redirect, url_for, current_app, abort, g, jsonify
 from . import main
 from .. import db
 from flask_login import login_required, current_user
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm,\
     CommentForm
-from ..models import Permission, Role, User, Post, Comment,charts
+from ..models import Permission, Role, User, Post, Comment, charts
 from ..decorators import admin_required, permission_required
-from ..data import out
+#from ..data import out
+from datetime import datetime
 import json
 
 
 @main.route('/mycharts')
+@login_required
 def mycharts():
     return render_template('charts.html')
+
 
 @main.route('/mychartstest')
 def mychartstest():
     return render_template('chartstest.html')
 
-@main.route('/data',methods=['GET','POST'])
-def json():
-    #fs = charts.query.all()
-    s = out() 
-    list = {'MQ2':[],'wendu':[],'shidu':[],'time':[]}
 
-    for n in s: 
+@main.route('/searchdata', methods=['GET', 'POST'])
+@login_required
+def searchdata():
+    if request.method == 'POST':
+        stime = request.form['starttime']
+        etime = request.form['endtime']
+        fs = charts.query.filter(charts.time >= stime).filter(charts.time <= etime).all()
+        list = {'MQ2': [], 'wendu': [], 'shidu': [], 'time': []}
+
+        for n in fs:
+            n = n.to()
+            list["MQ2"].append(n["MQ2"])
+            list["wendu"].append(n["wendu"])
+            list["shidu"].append(n["shidu"])
+            list["time"].append(n["time"])
+        data = list
+        return jsonify(data)
+    else:
+        pass
+
+@main.route('/data', methods=['GET', 'POST'])
+def json():
+    fs = charts.query.all()
+    #s = out()
+    list = {'MQ2': [], 'wendu': [], 'shidu': [], 'time': []}
+
+    for n in fs:
+        n = n.to()
         list["MQ2"].append(n["MQ2"])
         list["wendu"].append(n["wendu"])
         list["shidu"].append(n["shidu"])
         list["time"].append(n["time"])
-    print(list) 
-    return jsonify(list) 
+    return jsonify(list)
 
-    
 
 @main.route('/')
 def index():
@@ -50,7 +73,8 @@ def index():
 
     return render_template('index.html',
                            posts=posts,
-                           pagination=pagination)
+                           pagination=pagination,
+                           current_time=datetime.utcnow())
 
 
 @main.errorhandler(404)
@@ -143,6 +167,11 @@ def post_delete(post_id):
     db.session.commit()
     return redirect(url_for('main.index'))
 
+@main.route("/comment_delete/<int:comment_id>")
+def comment_delete(comment_id):
+    Comment.query.filter_by(id=comment_id).delete()
+    db.session.commit()
+    return redirect(url_for('main.index'))
 
 @main.route("/user/<username>")
 def user(username):
@@ -240,7 +269,7 @@ def followers(username):
         return redirect(url_for('.index'))
     page = request.args.get('page', 1, type=int)
     pagination = user.followers.paginate(
-        page, per_page=current_app.config['FLASKY_FOLLOWERS_PER_PAGE'],
+        page, per_page=current_app.config['YCNGU_FOLLOWERS_PER_PAGE'],
         error_out=False)
     follows = [{'user': item.follower, 'timestamp': item.timestamp}
                for item in pagination.items]
@@ -257,7 +286,7 @@ def followed_by(username):
         return redirect(url_for('.index'))
     page = request.args.get('page', 1, type=int)
     pagination = user.followed.paginate(
-        page, per_page=current_app.config['FLASKY_FOLLOWERS_PER_PAGE'],
+        page, per_page=current_app.config['YCNGU_FOLLOWERS_PER_PAGE'],
         error_out=False)
     follows = [{'user': item.followed, 'timestamp': item.timestamp}
                for item in pagination.items]
@@ -287,8 +316,8 @@ def show_followed():
 @permission_required(Permission.MODERATE)
 def moderate():
     page = request.args.get('page', 1, type=int)
-    pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(
-        page, per_page=current_app.config['FLASKY_COMMENTS_PER_PAGE'],
+    pagination = Comment.query.order_by(Comment.created.desc()).paginate(
+        page, per_page=current_app.config['YCNGU_COMMENTS_PER_PAGE'],
         error_out=False)
     comments = pagination.items
     return render_template('moderate.html', comments=comments,
