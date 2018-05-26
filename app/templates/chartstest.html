@@ -90,6 +90,7 @@ $.get("/data").done(function (data,status) {
             showAllSymbol:true,
             data:data["time"]
         },
+<<<<<<< HEAD
         yAxis:[
             {
                 boundaryGap:[0,'50%'],
@@ -254,6 +255,76 @@ $("#fo").click(function () {
         }  
     });
 
+=======
+        yAxis:{
+        },    
+        dataZoom:[
+            {
+                type:'slider',
+                show:true,
+                xAxisIndex:[0],
+                start:1,
+                end:35
+            },
+            { 
+                type:'slider',
+                show:true,
+                yAxisIndex:[0],
+                left:'93%',
+                start:1,
+                end:100
+            },
+            {
+                type:'inside',
+                xAxisIndex:[0],
+                start:1,
+                end:35
+            },
+            {
+                type:'inside',
+                yAxisIndex:[0],
+                start:1,
+                end:100
+            }    
+        ],
+        
+        series:[
+        {
+            name:"温度",
+            type:"line",
+            /*itemStyle:{
+                normal:{
+                    label:{show:true}
+                }
+            },*/
+            showAllSymbol:true,
+            data:data["wendu"]    
+        },
+        {
+            name:"湿度",
+            type:"line",
+            /*itemStyle:{
+                normal:{
+                    label:{show:true}
+                }
+            },*/
+            showAllSymbol:true,
+            data:data["shidu"]    
+        },
+        {
+            name:"烟雾浓度",
+            type:"line",
+            /*itemStyle:{
+                normal:{
+                    label:{show:true}
+                }
+            },*/     
+            showAllSymbol:true,
+            data:data["MQ2"]    
+        }
+        ]
+    });        
+>>>>>>> 3a51c4a66820d299055820503fd86474eb849e7e
 });
 </script>
 {% endblock %}

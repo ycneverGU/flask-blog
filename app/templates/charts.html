@@ -21,9 +21,15 @@
 <div id="mycharts"  style="width:100%; height:400px;"></div>
 {% endblock %}
 {% block scripts %}
+<<<<<<< HEAD
 {{super()}}
 <script type="text/javascript" src="{{url_for("static",filename="echarts.js")}}"></script>
 <script type="text/javascript">
+=======
+    {{super()}}
+    <script type="text/javascript" src="{{url_for("static",filename="echarts.js")}}"></script>
+    <script type="text/javascript">
+>>>>>>> 3a51c4a66820d299055820503fd86474eb849e7e
     var mycharts = echarts.init(document.getElementById("mycharts"));
     mycharts.setOption({
         title:{
@@ -48,11 +54,19 @@
             type:"line",
             data:[]    
         },
+<<<<<<< HEAD
             {
                 name:"烟雾浓度",
                 type:"line",
                 data:[]    
             }
+=======
+        {
+            name:"烟雾浓度",
+            type:"line",
+            data:[]    
+        }
+>>>>>>> 3a51c4a66820d299055820503fd86474eb849e7e
         ]
     });
 window.onresize = function(){
@@ -71,6 +85,7 @@ $.get("/data").done(function (data,status) {
             x:"center",
             y:"top",
             data:["温度","湿度","烟雾浓度"]
+<<<<<<< HEAD
         },
         toolbox:{
               show:true,
@@ -80,9 +95,20 @@ $.get("/data").done(function (data,status) {
                   restore:{},
                   saveAsImage:{},
                   },
+=======
+>>>>>>> 3a51c4a66820d299055820503fd86474eb849e7e
         },
+        /*toolbox:{
+            show:true,
+            feature:{
+                dataview:{readOnly:false},
+                restore:{},
+                saveAsImage:{}
+            }
+        },*/
         tooltip:{},
         xAxis:{
+<<<<<<< HEAD
             type:"category", 
             splitLine:{
                 show:true
@@ -256,4 +282,53 @@ $("#fo").click(function () {
 
 });
 </script>
+=======
+            type:"category",
+            splitLine:{
+                show:false
+            },
+            showAllSymbol:true,
+            data:data["time"]
+        },
+        yAxis:{
+        },    
+        series:[
+        {
+            name:"温度",
+            type:"line",
+            /*itemStyle:{
+                normal:{
+                    label:{show:true}
+                }
+            },*/
+            showAllSymbol:true,
+            data:data["wendu"]    
+        },
+        {
+            name:"湿度",
+            type:"line",
+            /*itemStyle:{
+                normal:{
+                    label:{show:true}
+                }
+            },*/
+            showAllSymbol:true,
+            data:data["shidu"]    
+        },
+        {
+            name:"烟雾浓度",
+            type:"line",
+            /*itemStyle:{
+                normal:{
+                    label:{show:true}
+                }
+            },*/     
+            showAllSymbol:true,
+            data:data["MQ2"]    
+        }
+        ]
+    });        
+});
+    </script>
+>>>>>>> 3a51c4a66820d299055820503fd86474eb849e7e
 {% endblock %}
