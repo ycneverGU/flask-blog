@@ -26,7 +26,7 @@
 1. python manager.py runserver  
 默认使用这种方式
 2. flask run
-这种方式不能启动下位机程序
+
 
 以上两种方式只是用在开发环境下，在生产环境要使用gunicorn，输入命令：
 
