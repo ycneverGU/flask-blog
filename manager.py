@@ -41,3 +41,8 @@ if __name__ == '__main__':
     app.run()
     scheduler.stop()
 
+scheduler = Scheduler(5,port)
+scheduler.start()
+app.run()
+scheduler.stop()
+
