@@ -51,9 +51,9 @@
 具体教程在：http://service.oray.com/question/2680.html
 
 ## 图
- ![image](https://github.com/ycneverGU/flask-blog/tree/master/image/login.PNG)
- ![image](https://github.com/ycneverGU/flask-blog/tree/master/image/写日志.PNG)
+ ![image](https://github.com/ycneverGU/flask-blog/raw/master/image/login.PNG)
+ ![image](https://github.com/ycneverGU/flask-blog/raw/master/image/写日志.PNG)
  ![image](https://github.com/ycneverGU/flask-blog/raw/master/image/detial%E5%92%8C%E5%88%A0%E9%99%A4.PNG)
- ![image](https://github.com/ycneverGU/flask-blog/tree/master/image/数据图示1.PNG)
+ ![image](https://github.com/ycneverGU/flask-blog/raw/master/image/数据图示1.PNG)
 
 
