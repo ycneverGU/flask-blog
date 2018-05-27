@@ -51,13 +51,13 @@
 具体教程在：http://service.oray.com/question/2680.html
 
 ## 图
-* 登录
+*登录
  ![image](https://github.com/ycneverGU/flask-blog/raw/master/image/login.PNG)
-* 编辑
+*编辑
  ![image](https://github.com/ycneverGU/flask-blog/raw/master/image/写日志.PNG)
-* 详情页
+*详情页
  ![image](https://github.com/ycneverGU/flask-blog/raw/master/image/detial和删除.PNG)
-* 上位机数据图示
+*上位机数据图示
  ![image](https://github.com/ycneverGU/flask-blog/raw/master/image/数据图示1.PNG)
 
 
